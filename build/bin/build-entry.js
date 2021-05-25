@@ -1,9 +1,10 @@
-var Components = require('../../components.json');
+// 覆写,自动生成src/index.js
+var Components = require('../../components.json'); // 组件名称（连接符）及组件导出路径的映射
 var fs = require('fs');
-var render = require('json-templater/string');
-var uppercamelcase = require('uppercamelcase');
+var render = require('json-templater/string'); // 用于渲染字符串及json模板
+var uppercamelcase = require('uppercamelcase'); // 将连接符命令、下划线命名等各种命名规范转化为大驼峰命名格式
 var path = require('path');
-var endOfLine = require('os').EOL;
+var endOfLine = require('os').EOL; // 获取换行符
 
 var OUTPUT_PATH = path.join(__dirname, '../../src/index.js');
 var IMPORT_TEMPLATE = 'import {{name}} from \'../packages/{{package}}/index.js\';';

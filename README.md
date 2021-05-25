@@ -1,70 +1,3 @@
-<p align="center">
-  <img src="https://cdn.rawgit.com/ElemeFE/element/dev/element_logo.svg">
-</p>
-
-<p align="center">
-  <a href="https://travis-ci.org/ElemeFE/element">
-    <img src="https://travis-ci.org/ElemeFE/element.svg?branch=master">
-  </a>
-  <a href="https://coveralls.io/github/ElemeFE/element?branch=master">
-    <img src="https://coveralls.io/repos/github/ElemeFE/element/badge.svg?branch=master">
-  </a>
-  <a href="https://cdnjs.com/libraries/element-ui">
-    <img src="https://img.shields.io/cdnjs/v/element-ui.svg">
-  </a>
-  <a href="https://www.npmjs.org/package/element-ui">
-    <img src="https://img.shields.io/npm/v/element-ui.svg">
-  </a>
-  <a href="https://npmcharts.com/compare/element-ui?minimal=true">
-    <img src="http://img.shields.io/npm/dm/element-ui.svg">
-  </a>
-  <br>
-  <a href="http://img.badgesize.io/https://unpkg.com/element-ui/lib/index.js?compression=gzip&label=gzip%20size:%20JS">
-    <img src="http://img.badgesize.io/https://unpkg.com/element-ui/lib/index.js?compression=gzip&label=gzip%20size:%20JS">
-  </a>
-  <a href="http://img.badgesize.io/https://unpkg.com/element-ui/lib/theme-chalk/index.css?compression=gzip&label=gzip%20size:%20CSS">
-    <img src="http://img.badgesize.io/https://unpkg.com/element-ui/lib/theme-chalk/index.css?compression=gzip&label=gzip%20size:%20CSS">
-  </a>
-  <a href="#backers">
-    <img src="https://opencollective.com/element/backers/badge.svg">
-  </a>
-  <a href="#sponsors">
-    <img src="https://opencollective.com/element/sponsors/badge.svg">
-  </a>
-  <a href="LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-yellow.svg">
-  </a>
-</p>
-
-> A Vue.js 2.0 UI Toolkit for Web.
-
-Element will stay with Vue 2.x 
-
-For Vue 3.0, we recommend using [Element Plus](https://github.com/element-plus/element-plus) from the same team
-
-## Links
-- Homepage and documentation
-  - [International users](http://element.eleme.io/#/en-US)
-  - [Chinese users](http://element-cn.eleme.io/#/zh-CN)
-  - [Spanish users](http://element.eleme.io/#/es)
-  - [French users](http://element.eleme.io/#/fr-FR)
-- [awesome-element](https://github.com/ElementUI/awesome-element)
-- [FAQ](./FAQ.md)
-- [Vue.js 3.0 migration](https://github.com/element-plus/element-plus)
-- [Customize theme](http://element.eleme.io/#/en-US/component/custom-theme)
-- [Preview and generate theme online](https://elementui.github.io/theme-chalk-preview)
-- [Element for React](https://github.com/elemefe/element-react)
-- [Element for Angular](https://github.com/ElemeFE/element-angular)
-- [Atom helper](https://github.com/ElemeFE/element-helper)
-- [Visual Studio Code helper](https://github.com/ElemeFE/vscode-element-helper)
-- Starter kit
-  - [element-starter](https://github.com/ElementUI/element-starter)
-  - [element-in-laravel-starter](https://github.com/ElementUI/element-in-laravel-starter)
-- [Design resources](https://github.com/ElementUI/Resources)
-- Gitter
-  - [International users](https://gitter.im/element-en/Lobby)
-  - [Chinese users](https://gitter.im/ElemeFE/element)
-
 ## Install
 ```shell
 npm install element-ui -S
@@ -142,5 +75,66 @@ Scan the QR code using [Dingtalk App](https://www.dingtalk.com/) to join in disc
 <img alt="Join Discusion Group" src="https://user-images.githubusercontent.com/17680888/93177882-0ae92d80-f766-11ea-870d-3fa2d7f06454.png" width="300">
 
 
-## LICENSE
-[MIT](LICENSE)
+## 问题
+1、element-ui项目克隆就需要10分钟
+2、安装依赖：使用 yarn 报错， 使用 npm install 即可， 然后执行npm run dev可启动一个element-ui的官网
+3、执行命令`npm run add:component apple 苹果`就可创建一个 apple的组件相关文件（`"add:component": "node build/bin/new.js",`）`<component-name> [中文]`
+
+
+## package.json中命令解析
+```
+安装依赖
+"bootstrap": "yarn || npm i", 
+
+构建文件，分别是生成字体图标名称数组的json文件，插件入口文件；国际化文件，版本文件；
+"build:file": "node build/bin/iconInit.js & node build/bin/build-entry.js & node build/bin/i18n.js & node build/bin/version.js",
+
+// theme文件打包
+"build:theme": "node build/bin/gen-cssfile && gulp build --gulpfile packages/theme-chalk/gulpfile.js & cp-cli packages/theme-chalk/lib lib/theme-chalk",
+
+// 设置环境变量 BABEL_ENV=utils，编译整个src目录并使用——out-dir或-d将其输出到lib目录。这不会覆盖lib中的任何其他文件或目录。忽略src/index.js
+"build:utils": "cross-env BABEL_ENV=utils babel src --out-dir lib --ignore src/index.js",
+
+
+// 生成lib/umd/locale/xx.js文件,比如zh-CN.js
+"build:umd": "node build/bin/build-locale.js",
+
+// 清除lib packages/*/lib  test/**/coverage 文件夹
+"clean": "rimraf lib && rimraf packages/*/lib && rimraf test/**/coverage",
+
+// 自动生成图标json，插件入口，国际化，版本文件；设置环境变量为生产模式，使用webpack.demo.js打包构建，并写入一个文件？
+"deploy:build": "npm run build:file && cross-env NODE_ENV=production webpack --config build/webpack.demo.js && echo element.eleme.io>>examples/element-ui/CNAME",
+
+
+// 设置环境变量为生产模式，使用webpack.extension.js打包
+"deploy:extension": "cross-env NODE_ENV=production webpack --config build/webpack.extension.js",
+
+
+// 删除examples/extension/dist， 并设置环境变量为开发模式 使用build/webpack.extension.js打包
+"dev:extension": "rimraf examples/extension/dist && cross-env NODE_ENV=development webpack --watch--config build/webpack.extension.js",
+
+
+// 构建element主页官网效果；根据tpl模板构建前端页面？
+"dev": "npm run bootstrap && npm run build:file && cross-env NODE_ENV=development webpack-dev-server--config build/webpack.demo.js & node build/bin/template.js",
+
+// PLAY_ENV=true并根据build/webpack.demo.js打包
+"dev:play": "npm run build:file && cross-env NODE_ENV=development PLAY_ENV=true webpack-dev-server--config build/webpack.demo.js",
+
+// 清除、校验 并根据build/webpack.conf.js、webpack.common.js、webpack.component.js 等打包
+"dist": "npm run clean && npm run build:file && npm run lint && webpack --config build/webpack.conf.js&& webpack --config build/webpack.common.js && webpack --config build/webpack.component.js && npm run build:utils && npm run build:umd && npm run build:theme",
+
+// 生成一系列的examples/pages/zh-CN/guide.vue等
+"i18n": "node build/bin/i18n.js",
+
+// 校验
+"lint": "eslint src/**/* test/**/* packages/**/* build/**/* --quiet",
+
+// 发布到仓库
+"pub": "npm run bootstrap && sh build/git-release.sh && sh build/release.sh && node build/bingen-indices.js",
+
+// 测试
+"test": "npm run lint && npm run build:theme && cross-env CI_ENV=/dev/ BABEL_ENV=test karma start testunit/karma.conf.js --single-run",
+
+// 测试：watch
+"test:watch": "npm run build:theme && cross-env BABEL_ENV=test karma start test/unit/karma.conf.js"
+```

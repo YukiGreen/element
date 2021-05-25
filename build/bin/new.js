@@ -153,3 +153,14 @@ fileSave(path.join(__dirname, '../../examples/nav.config.json'))
   .end('\n');
 
 console.log('DONE!');
+
+
+/**
+new.js脚本主要做了下面几件事：
+
+把你新建的组件添加到 components.json
+添加到 index.scss
+添加到 element-ui.d.ts
+创建 package
+添加到 nav.config.json
+*/

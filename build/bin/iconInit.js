@@ -1,5 +1,6 @@
 'use strict';
 
+// 这个文件用于将样式文件中icon.scss内容的图标名称提出出来放到一个json文件中
 var postcss = require('postcss');
 var fs = require('fs');
 var path = require('path');

@@ -1,5 +1,6 @@
 'use strict';
 
+// 生成国际化，但没太看懂,可以稍后执行下看看
 var fs = require('fs');
 var path = require('path');
 var langConfig = require('../../examples/i18n/page.json');
